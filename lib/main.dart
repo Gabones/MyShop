@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Autoria035',
         theme: ThemeData(
-          // primarySwatch: Colors.white38,
-          accentColor: Colors.white,
+          primarySwatch: Colors.primaryWhite,
+          accentColor: Colors.black,
           fontFamily: 'Lato'
         ),
         home: ProductsOverviewScreen(),
