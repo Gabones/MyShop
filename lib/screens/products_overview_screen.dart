@@ -10,7 +10,14 @@ class ProductsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Autoria035',
+          style: TextStyle(
+            color: Colors.black
+          ),
+        ),
       ),
       body: ProductGrid(),
     );
