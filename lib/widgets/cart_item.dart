@@ -18,8 +18,32 @@ class CartItem extends StatelessWidget {
     return Dismissible(
       key: ValueKey(id),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('Are you sure?'),
+                  content: Text('You will to remove this item.'),
+                  actions: [
+                    TextButton(
+                      child: Text(
+                        'Sim',
+                        style: TextStyle(color: Theme.of(context).accentColor),
+                      ),
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                    ),
+                    TextButton(
+                      child: Text(
+                        'Não',
+                        style: TextStyle(color: Theme.of(context).accentColor),
+                      ),
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                    ),
+                  ],
+                ));
+      },
       background: Container(
-          color: Theme.of(context).errorColor,
+        color: Theme.of(context).errorColor,
         child: Icon(
           Icons.delete,
           color: Theme.of(context).primaryColor,
@@ -36,14 +60,11 @@ class CartItem extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).accentColor,
+                backgroundColor: Theme.of(context).accentColor,
                 child: Padding(
                   padding: EdgeInsets.all(5),
-                  child: FittedBox(
-                      child: Text('\$$price')
-                  ),
-                )
-            ),
+                  child: FittedBox(child: Text('\$$price')),
+                )),
             title: Text(title),
             subtitle: Text('Total: \$${(price * quantity)}'),
             trailing: Text('$quantity x'),
