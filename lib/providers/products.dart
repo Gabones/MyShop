@@ -10,7 +10,7 @@ class Products with ChangeNotifier {
       description: 'Style black cap by Autoria035.',
       price: 49.99,
       imageUrl:
-      'https://instagram.fcxj3-1.fna.fbcdn.net/v/t51.2885-15/e35/131924208_3330188810441114_4116624755007902057_n.jpg?_nc_ht=instagram.fcxj3-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=RvPd166S8YMAX__Y2nR&tn=0qd9mAziK1IIAARq&edm=AP_V10EBAAAA&ccb=7-4&oh=2d0cd55254929d1de4190b26404b634d&oe=610567C5&_nc_sid=4f375e',
+      'https://instagram.fcxj3-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/169083859_118111817022241_9172647398783829585_n.jpg?_nc_ht=instagram.fcxj3-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=SXKqccAGUekAX96VtLU&edm=AP_V10EBAAAA&ccb=7-4&oh=880ef7852a3b9f3e067c25f99f66a72d&oe=6116A093&_nc_sid=4f375e',
     ),
     Product(
       id: 'p2',
@@ -42,7 +42,7 @@ class Products with ChangeNotifier {
       description: 'Incredible purple short',
       price: 59.99,
       imageUrl:
-      'https://instagram.fcxj3-1.fna.fbcdn.net/v/t51.2885-15/e35/134827209_252395452948921_4222229187501981846_n.jpg?_nc_ht=instagram.fcxj3-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=C8KS5j6cO3cAX9iZGbd&edm=AP_V10EBAAAA&ccb=7-4&oh=1eed7d8a1d573f53ff52c6892bda2c9b&oe=6106AC19&_nc_sid=4f375e'
+      'https://instagram.fcxj3-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/129181703_670238113852842_4707354183429729902_n.jpg?_nc_ht=instagram.fcxj3-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=fGdNdEviSsEAX_QfHWr&edm=AP_V10EBAAAA&ccb=7-4&oh=02748c47ff02a4998bbae108f9fdf4ae&oe=611690FF&_nc_sid=4f375e'
     ),
     Product(
         id: 'p6',
@@ -50,7 +50,7 @@ class Products with ChangeNotifier {
         description: 'Incredible Black short',
         price: 59.99,
         imageUrl:
-        'https://instagram.fcxj3-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/128467821_125613026025402_7453961432386993107_n.jpg?_nc_ht=instagram.fcxj3-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=q--Nl-qwxvYAX_PWFsU&edm=AP_V10EBAAAA&ccb=7-4&oh=7bcb7bbea907be301de93588f0b8c8e9&oe=6106C0BB&_nc_sid=4f375e'
+        'https://instagram.fcxj3-1.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/128270414_420518072310386_9138796884129738836_n.jpg?_nc_ht=instagram.fcxj3-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=vRW4ZinsNtUAX-8Ctgt&edm=AP_V10EBAAAA&ccb=7-4&oh=3285f2c5c9f483c3e959f1d213f4688b&oe=611592A3&_nc_sid=4f375e'
     ),
   ];
   //bool _showFavoritesOnly = false;
@@ -82,8 +82,31 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProduct() {
-    //_items.add(value);
+  void addProduct(Product product) {
+    final newProduct = Product(
+        id: DateTime.now().toString(),
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl
+    );
+    _items.add(newProduct);
+    notifyListeners();
+  }
+
+  void editProduct(String id, Product editedProduct) {
+    final indexProd = _items.indexWhere((prod) => prod.id == id);
+    if(indexProd >= 0) {
+      _items[indexProd] = editedProduct;
+      notifyListeners();
+    } else {
+      print('fail');
+    }
+  }
+
+  void deleteProduct(String id){
+    print(id);
+    _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
