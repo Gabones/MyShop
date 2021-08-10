@@ -79,7 +79,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  void _saveForm() async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       print('fail');
@@ -93,28 +93,66 @@ class _EditProductScreenState extends State<EditProductScreen> {
       setState(() => _isLoading = false);
       Navigator.of(context).pop();
     } else {
-      Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((onError) => showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                    title: Text('Ocorreu um erro'),
-                    content: Text(onError.toString()),
-                    actions: [
-                      TextButton(
-                          child: Text(
-                            'OK',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () => Navigator.of(ctx).pop()),
-                    ],
-                  )))
-          .then((_) {
+      try {
+        await Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+      } catch (onError) {
+        await showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('Ocorreu um erro'),
+                  content: Text(onError.toString()),
+                  actions: [
+                    TextButton(
+                        child: Text(
+                          'OK',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () => Navigator.of(ctx).pop()),
+                  ],
+                ));
+      } finally {
         setState(() => _isLoading = false);
         Navigator.of(context).pop();
-      });
+      }
     }
   }
+
+  // void _saveForm() {
+  //   final isValid = _form.currentState!.validate();
+  //   if (!isValid) {
+  //     print('fail');
+  //     return;
+  //   }
+  //   _form.currentState!.save();
+  //   setState(() => _isLoading = true);
+  //   if (_editedProduct.id != '') {
+  //     Provider.of<Products>(context, listen: false)
+  //         .editProduct(_editedProduct.id, _editedProduct);
+  //     setState(() => _isLoading = false);
+  //     Navigator.of(context).pop();
+  //   } else {
+  //     Provider.of<Products>(context, listen: false)
+  //         .addProduct(_editedProduct)
+  //         .catchError((onError) => showDialog(
+  //             context: context,
+  //             builder: (ctx) => AlertDialog(
+  //                   title: Text('Ocorreu um erro'),
+  //                   content: Text(onError.toString()),
+  //                   actions: [
+  //                     TextButton(
+  //                         child: Text(
+  //                           'OK',
+  //                           style: TextStyle(color: Colors.black),
+  //                         ),
+  //                         onPressed: () => Navigator.of(ctx).pop()),
+  //                   ],
+  //                 )))
+  //         .then((_) {
+  //       setState(() => _isLoading = false);
+  //       Navigator.of(context).pop();
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
