@@ -45,14 +45,14 @@ class _CartScreenState extends State<CartScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: TextButton(
-                      onPressed: () {
-                        Provider.of<Orders>(context, listen: false).addOrder(cart.items.values.toList(), cart.totalAmount);
-                        cart.clear();
-                      },
                       child: Text(
                         'Order Now',
                         style: TextStyle(color: Theme.of(context).accentColor),
                       ),
+                      onPressed: cart.totalAmount <= 0 ? null : () {
+                        Provider.of<Orders>(context, listen: false).addOrder(cart.items.values.toList(), cart.totalAmount);
+                        cart.clear();
+                      },
                     ),
                   )
                 ],
