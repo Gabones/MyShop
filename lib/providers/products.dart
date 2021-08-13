@@ -135,7 +135,7 @@ class Products with ChangeNotifier {
   }
 
   // Future<void> addProduct(Product product) {
-  //   final url = Uri.https('flutter-course-f37f6-default-rtdb.firebaseio.com', '/products');
+  //   final url = Uri.https('flutter-course-f37f6-default-rtdb.firebaseio.com', '/products.json');
   //   return http.post(url, body: json.encode({
   //     'title': product.title,
   //     'description': product.description,
@@ -159,9 +159,16 @@ class Products with ChangeNotifier {
   //   });
   // }
 
-  void editProduct(String id, Product editedProduct) {
+  Future<void> editProduct(String id, Product editedProduct) async {
     final indexProd = _items.indexWhere((prod) => prod.id == id);
     if (indexProd >= 0) {
+      final url = Uri.https('flutter-course-f37f6-default-rtdb.firebaseio.com', '/products/$id.json');
+      await http.patch(url, body: json.encode({
+        'title': editedProduct.title,
+        'description': editedProduct.description,
+        'price': editedProduct.price,
+        'imageUrl': editedProduct.imageUrl,
+      }));
       _items[indexProd] = editedProduct;
       notifyListeners();
     } else {
@@ -170,8 +177,16 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    print(id);
-    _items.removeWhere((prod) => prod.id == id);
+    final url = Uri.https('flutter-course-f37f6-default-rtdb.firebaseio.com', '/products/$id.json');
+    final oldIndex = _items.indexWhere((prod) => prod.id == id);
+    final oldProd = _items[oldIndex];
+    http.delete(url).then((response) {
+      if(response.statusCode >= 400){
+        _items.insert(oldIndex, oldProd);
+        notifyListeners();
+      }
+    });
+    _items.removeAt(oldIndex);
     notifyListeners();
   }
 }

@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/rendering.dart';
 
 import '../providers/cart.dart' show Cart;
-import '../providers/orders.dart';
 import '../widgets/cart_item.dart';
+import '../widgets/order_button.dart';
 
 class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
@@ -42,19 +42,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     backgroundColor: Theme.of(context).accentColor,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: TextButton(
-                      child: Text(
-                        'Order Now',
-                        style: TextStyle(color: Theme.of(context).accentColor),
-                      ),
-                      onPressed: cart.totalAmount <= 0 ? null : () {
-                        Provider.of<Orders>(context, listen: false).addOrder(cart.items.values.toList(), cart.totalAmount);
-                        cart.clear();
-                      },
-                    ),
-                  )
+                  OrderButton(cart: cart)
                 ],
               ),
             ),

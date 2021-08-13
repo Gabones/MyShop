@@ -88,13 +88,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _form.currentState!.save();
     setState(() => _isLoading = true);
     if (_editedProduct.id != '') {
-      Provider.of<Products>(context, listen: false)
+      await Provider.of<Products>(context, listen: false)
           .editProduct(_editedProduct.id, _editedProduct);
-      setState(() => _isLoading = false);
-      Navigator.of(context).pop();
     } else {
       try {
-        await Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
       } catch (onError) {
         await showDialog(
             context: context,
@@ -110,11 +109,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         onPressed: () => Navigator.of(ctx).pop()),
                   ],
                 ));
-      } finally {
-        setState(() => _isLoading = false);
-        Navigator.of(context).pop();
       }
     }
+    setState(() => _isLoading = false);
+    Navigator.of(context).pop();
   }
 
   // void _saveForm() {
