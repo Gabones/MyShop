@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 import '../screens/auth_screen.dart';
+import '../models/http_exception.dart';
 
 class AuthCard extends StatefulWidget {
   @override
@@ -19,6 +20,22 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('Erro'),
+              content: Text(message),
+          actions: [
+            TextButton(
+              child: Text('Ok', style: TextStyle(color: Colors.black)),
+              onPressed: () => Navigator.of(ctx).pop(),
+            )
+          ],
+            )
+    );
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
@@ -28,13 +45,34 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-      await Provider.of<Auth>(context, listen: false).login(_authData['email'], _authData['password']);
-    } else {
-      // Sign user up
-      await Provider.of<Auth>(context, listen: false)
-          .singUp(_authData['email'], _authData['password']);
+    try {
+      if (_authMode == AuthMode.Login) {
+        // Log user in
+        await Provider.of<Auth>(context, listen: false)
+            .login(_authData['email'], _authData['password']);
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context, listen: false)
+            .singUp(_authData['email'], _authData['password']);
+      }
+    } on HttpException catch (error) {
+      var errorMessage = 'Authenticate Failed.';
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'Este email já esta sendo usado.';
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'Por favor informe um email válido.';
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'Senha fraca.';
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Email não encontrado.';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Senha incorreta.';
+      }
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      const errorMessage =
+          'Could not authenticate you. Please try again later.';
+      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;

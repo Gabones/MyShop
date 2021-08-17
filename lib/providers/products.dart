@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/http_exception.dart';
 import 'product.dart';
 
 class Products with ChangeNotifier {
@@ -137,6 +138,7 @@ class Products with ChangeNotifier {
       if(response.statusCode >= 400){
         _items.insert(oldIndex, oldProd);
         notifyListeners();
+        throw HttpException('Could not delete product.');
       }
     });
     _items.removeAt(oldIndex);
