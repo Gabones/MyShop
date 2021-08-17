@@ -7,6 +7,10 @@ import '../models/http_exception.dart';
 import 'product.dart';
 
 class Products with ChangeNotifier {
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   List<Product> _items = [];
   //bool _showFavoritesOnly = false;
 
@@ -39,7 +43,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.https(
-        'flutter-course-f37f6-default-rtdb.firebaseio.com', '/products.json');
+        'flutter-course-f37f6-default-rtdb.firebaseio.com', '/products.json', {'auth': '$authToken'});
     try {
       final dataProduct = await http.get(url);
       final decodedData = json.decode(dataProduct.body) as Map<String, dynamic>;
