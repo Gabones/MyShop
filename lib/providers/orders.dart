@@ -18,8 +18,8 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  final String authToken;
-  final String userId;
+  final String? authToken;
+  final String? userId;
   List<OrderItem> _orders = [];
 
   Orders(this.authToken, this.userId, this._orders);

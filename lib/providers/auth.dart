@@ -2,16 +2,17 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  late String? _token;
-  late DateTime? _expiryDate = DateTime.now().add(Duration(seconds: 3));
-  late String? _userId;
-  late Timer? _authTimer;
+  String? _token;
+  DateTime? _expiryDate = DateTime.now().add(Duration(seconds: 3));
+  String? _userId;
+  Timer? _authTimer;
 
   static const _key = 'AIzaSyCS7jEVInweLXN_d1cn7uHb3LSKwRIoH8k';
 
@@ -43,7 +44,7 @@ class Auth with ChangeNotifier {
             'returnSecureToken': true
           }));
       final responseData = json.decode(response.body);
-      if(responseData['error'] != null){
+      if(responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
       _token = responseData['idToken'];
