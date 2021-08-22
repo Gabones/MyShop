@@ -82,7 +82,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void _saveForm() async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
-      print('fail');
       return;
     }
     _form.currentState!.save();
@@ -118,7 +117,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   // void _saveForm() {
   //   final isValid = _form.currentState!.validate();
   //   if (!isValid) {
-  //     print('fail');
   //     return;
   //   }
   //   _form.currentState!.save();

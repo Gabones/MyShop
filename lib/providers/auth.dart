@@ -26,7 +26,6 @@ class Auth with ChangeNotifier {
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
         _token != null) {
-      //print('teste datetime deu after');
       return _token;
     }
     return null;
@@ -55,8 +54,6 @@ class Auth with ChangeNotifier {
       _userId = responseData['localId'];
       _expiryDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData?['expiresIn'])));
-      // print(responseData['expiresIn']);
-      // print(_expiryDate);
       _autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
@@ -80,23 +77,15 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin() async {
-    print('chamou');
     final prefs = await SharedPreferences.getInstance();
-    print('01');
     if (!prefs.containsKey('userData')) {
-      print('false contains');
       return false;
     }
-    print('02');
-    final extractedUserData = json.decode(prefs.getString('userData')!) as Map<String, Object>; //aqui tem problema!
-    print('03');
+    final extractedUserData = json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
     final expiryDate = DateTime.parse(extractedUserData['expiryDate'].toString());
-    print('04');
     if (expiryDate.isBefore(DateTime.now())) {
-      print('false data');
       return false;
     }
-    print('05');
     _token = extractedUserData['token'].toString();
     _userId = extractedUserData['userId'].toString();
     _expiryDate = expiryDate;

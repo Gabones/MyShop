@@ -87,7 +87,6 @@ class Products with ChangeNotifier {
             'imageUrl': product.imageUrl,
             'creatorId': userId,
           }));
-      print(json.decode(response.body));
       final newProduct = Product(
           id: json.decode(response.body)['name'],
           title: product.title,
@@ -111,7 +110,6 @@ class Products with ChangeNotifier {
   //     'imageUrl': product.imageUrl,
   //     'isFavorite': product.isFavorite,
   //   })).then((response) {
-  //     print(json.decode(response.body));
   //     final newProduct = Product(
   //         id: json.decode(response.body)['name'],
   //         title: product.title,
@@ -122,7 +120,6 @@ class Products with ChangeNotifier {
   //     _items.add(newProduct);
   //     notifyListeners();
   //   }).catchError((onError) {
-  //     print(onError);
   //     throw onError;
   //   });
   // }

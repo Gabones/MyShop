@@ -17,7 +17,6 @@ class UserProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //final productsData = Provider.of<Products>(context); causa um loop infinito
     //Alternativa é dar um wrap no Padding com o Consumer widget
-    print('rebuild');
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Products'),
