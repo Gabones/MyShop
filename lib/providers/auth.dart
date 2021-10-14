@@ -14,7 +14,7 @@ class Auth with ChangeNotifier {
   String? _userId;
   Timer? _authTimer;
 
-  static const _key = 'AIzaSyCS7jEVInweLXN_d1cn7uHb3LSKwRIoH8k';
+  static const _key = '';
 
   //Auth(this._token, this._expiryDate, this._userId);
 

@@ -48,8 +48,8 @@ class MyApp extends StatelessWidget {
           builder: (ctx, authData, child) => MaterialApp(
               title: 'Autoria035',
               theme: ThemeData(
-                  primarySwatch: Colors.primaryWhite,
-                  accentColor: Colors.black,
+                  primarySwatch: Colors.blue,
+                  secondaryHeaderColor: Colors.black,
                   fontFamily: 'Lato'),
               home: authData.isAuth
                   ? ProductsOverviewScreen()
